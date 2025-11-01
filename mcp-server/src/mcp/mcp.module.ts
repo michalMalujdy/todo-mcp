@@ -3,6 +3,8 @@ import { TransportService } from "./transportation.service";
 import { McpServerService } from "./mcp-server.service";
 import { McpController } from "./mcp.controller";
 import { ResourcesService } from "./capabilities/resources/resources.service";
+import { MCP_RESOURCE } from "./capabilities/resources/mcp-resource.interface";
+import { GetAllTasksResource } from "./capabilities/resources/get-all-tasks.resource";
 
 @Module({
     imports: [],
@@ -10,7 +12,11 @@ import { ResourcesService } from "./capabilities/resources/resources.service";
     providers: [
         McpServerService,
         TransportService,
-        ResourcesService
+        ResourcesService,
+        {
+            provide: MCP_RESOURCE,
+            useClass: GetAllTasksResource
+        }
     ]
 })
 export class McpModule { }

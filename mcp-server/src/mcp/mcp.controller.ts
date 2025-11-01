@@ -11,6 +11,8 @@ export class McpController {
     @Post()
     async handle(@Req() req: Request, @Res() res: Response) {
         const sessionId = req.headers['mcp-session-id'] as string;
+
+        console.debug('Request under POST /mcp', sessionId);
         
         await this.mcpServerService.handleRequest(req, res, req.body, sessionId);
     }

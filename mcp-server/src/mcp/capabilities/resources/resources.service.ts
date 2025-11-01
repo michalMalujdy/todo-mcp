@@ -1,29 +1,39 @@
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp";
-import { Injectable } from "@nestjs/common";
+import { McpServer, ReadResourceCallback, ResourceMetadata } from "@modelcontextprotocol/sdk/server/mcp";
+import { Inject, Injectable } from "@nestjs/common";
+import { MCP_RESOURCE, McpResource } from "./mcp-resource.interface";
 
 @Injectable()
 export class ResourcesService {
+    constructor(
+        @Inject(MCP_RESOURCE) private readonly resources: McpResource[]
+    ) { }
+
     register(server: McpServer) {
+        this.resources.forEach(resource => {
+            this.registerResource(server, resource);
+        });
+    }
+
+    private registerResource(server: McpServer, resource: McpResource) {
+        const metadata = resource.getMetadata();
+        
         server.registerResource(
-            'all-tasks',
-            'tasks://all',
+            metadata.name,
+            metadata.uri,
             {
-                title: 'Get All Tasks',
-                description: 'Complete, unfiltered list of all tasks',
+                title: metadata.name,
+                description: metadata.description,
                 mimeType: 'application/json'
             },
             async (uri) => {
-                const tasks = [
-                    { id: '1', title: 'Task 1', status: 'todo' },
-                    { id: '2', title: 'Task 2', status: 'completed' }
-                ];
+                const result = resource.handle(uri);
 
                 return {
                     contents: [
                         {
                             uri: uri.href,
                             mimeType: 'application/json',
-                            text: JSON.stringify(tasks, null, 2)
+                            text: JSON.stringify(result, null, 2)
                         }
                     ]
                 }
