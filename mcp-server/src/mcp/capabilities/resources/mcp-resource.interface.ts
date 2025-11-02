@@ -8,5 +8,5 @@ export type McpResourceMetadata = {
 
 export interface McpResource {
     getMetadata(): McpResourceMetadata;
-    handle(uri: URL): any;
+    handle(uri: URL): Promise<any>;
 }

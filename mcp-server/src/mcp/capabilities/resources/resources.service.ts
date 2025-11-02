@@ -1,4 +1,4 @@
-import { McpServer, ReadResourceCallback, ResourceMetadata } from "@modelcontextprotocol/sdk/server/mcp";
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp";
 import { Inject, Injectable } from "@nestjs/common";
 import { MCP_RESOURCE, McpResource } from "./mcp-resource.interface";
 
@@ -26,7 +26,7 @@ export class ResourcesService {
                 mimeType: 'application/json'
             },
             async (uri) => {
-                const result = resource.handle(uri);
+                const result = await resource.handle(uri);
 
                 return {
                     contents: [

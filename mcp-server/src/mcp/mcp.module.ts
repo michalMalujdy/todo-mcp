@@ -5,9 +5,10 @@ import { McpController } from "./mcp.controller";
 import { ResourcesService } from "./capabilities/resources/resources.service";
 import { MCP_RESOURCE, McpResource } from "./capabilities/resources/mcp-resource.interface";
 import { GetAllTasksResource } from "./capabilities/resources/get-all-tasks.resource";
+import { HttpModule } from "@nestjs/axios";
 
 @Module({
-    imports: [],
+    imports: [HttpModule],
     controllers: [McpController],
     providers: [
         McpServerService,

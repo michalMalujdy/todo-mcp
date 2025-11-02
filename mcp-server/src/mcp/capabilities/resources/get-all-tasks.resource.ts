@@ -1,8 +1,14 @@
 import { Injectable } from "@nestjs/common";
+import { HttpService } from '@nestjs/axios';
+import { firstValueFrom } from 'rxjs';
 import { McpResource, McpResourceMetadata } from "./mcp-resource.interface";
 
 @Injectable()
 export class GetAllTasksResource implements McpResource {
+    constructor(
+        private readonly http: HttpService
+    ) { }
+
     getMetadata(): McpResourceMetadata {
         return {
             name: 'Get All Tasks',
@@ -10,13 +16,12 @@ export class GetAllTasksResource implements McpResource {
             uri: 'tasks://all'
         }
     }
-    handle(uri: URL) {
-        const tasks = [
-            { id: '1', title: 'Task 1', status: 'todo' },
-            { id: '2', title: 'Task 2', status: 'completed' }
-        ];
+    async handle(uri: URL) {
+        const response = await firstValueFrom(
+            this.http.get('http://localhost:3000/tasks')
+        );
 
-        return tasks;
+        return response.data;
     }
 
 }
