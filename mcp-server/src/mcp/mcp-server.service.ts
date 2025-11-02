@@ -10,7 +10,7 @@ export class McpServerService {
 
     constructor(
         private readonly transportService: TransportService,
-        private readonly resourcesService: ResourcesService
+        resourcesService: ResourcesService
     ) {
         this.server = new McpServer({
             name: 'Todo',
